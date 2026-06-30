@@ -18,18 +18,28 @@
 <meta name="apple-mobile-web-app-title" content="牧場インフォメーション">
 
 <style>
-  body {
+  html, body {
     margin: 0;
-    height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    padding: 0;
+    height: 100%;
     background: #f6f5f2;
     font-family: -apple-system, BlinkMacSystemFont, "Hiragino Sans", "Noto Sans JP", sans-serif;
   }
+  #app-frame {
+    border: none;
+    width: 100%;
+    height: 100vh;
+    display: block;
+  }
   .loading {
-    text-align: center;
+    position: fixed;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
     color: #6b6b66;
+    background: #f6f5f2;
   }
   .loading img {
     width: 64px;
@@ -45,19 +55,28 @@
 </head>
 <body>
 
-<div class="loading">
+<!-- 読み込み中表示。iframeのGASページが読み込み完了したら非表示にする -->
+<div class="loading" id="loadingScreen">
   <img src="icon-192.png" alt="">
   <p>読み込み中…</p>
 </div>
 
+<!-- GAS Web Appをこのページ（GitHub Pages、固定URL）の中にiframeで埋め込んで表示する。
+     これにより、アドレスバーは常に mhansyokub-design.github.io のままになり、
+     「ホーム画面に追加」時にこのページのmanifest.json・アイコンが正しく参照される。 -->
+<iframe id="app-frame" src="GAS_WEBAPP_URL_PLACEHOLDER" title="牧場インフォメーション"></iframe>
+
 <script>
-  // GAS Web AppのURL。ここをデプロイ更新で変わった場合は1箇所だけ書き換えればよい。
+  // GAS Web AppのURL。デプロイ更新で変わった場合は1箇所だけ書き換えればよい。
   var GAS_WEBAPP_URL = 'https://script.google.com/macros/s/AKfycbwGw4MZQiDA3jJqslfrvRBSbSOEblW09VXhJfy4yZxr6YFEsTS-OkyxReD4uNk7Midjjg/exec';
 
-  // location.replace を使うことで、ブラウザの「戻る」履歴にこの中継ページが
-  // 残らないようにする（戻るボタンを押した時にこのページに戻ってきて
-  // また転送される、という無限ループ感を避けるため）。
-  location.replace(GAS_WEBAPP_URL);
+  var iframeEl = document.getElementById('app-frame');
+  iframeEl.src = GAS_WEBAPP_URL;
+
+  iframeEl.addEventListener('load', function () {
+    var loadingEl = document.getElementById('loadingScreen');
+    if (loadingEl) loadingEl.style.display = 'none';
+  });
 </script>
 
 </body>
