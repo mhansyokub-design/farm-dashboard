@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>牧場インフォメーション</title>
+
+<!-- PWAマニフェスト（このファイルはGitHub Pages上に固定で置かれているので、
+     Google Apps Scriptのように毎回URLが変わってしまう問題が起きない） -->
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#4a7c59">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="icon" href="icon-192.png">
+
+<!-- iOS Safariでホーム画面に追加した際に、アドレスバー無しの全画面表示にする -->
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="牧場インフォメーション">
+
+<style>
+  body {
+    margin: 0;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #f6f5f2;
+    font-family: -apple-system, BlinkMacSystemFont, "Hiragino Sans", "Noto Sans JP", sans-serif;
+  }
+  .loading {
+    text-align: center;
+    color: #6b6b66;
+  }
+  .loading img {
+    width: 64px;
+    height: 64px;
+    border-radius: 14px;
+    margin-bottom: 12px;
+  }
+  .loading p {
+    font-size: 13px;
+    margin: 0;
+  }
+</style>
+</head>
+<body>
+
+<div class="loading">
+  <img src="icon-192.png" alt="">
+  <p>読み込み中…</p>
+</div>
+
+<script>
+  // GAS Web AppのURL。ここをデプロイ更新で変わった場合は1箇所だけ書き換えればよい。
+  var GAS_WEBAPP_URL = 'https://script.google.com/macros/s/AKfycbwGw4MZQiDA3jJqslfrvRBSbSOEblW09VXhJfy4yZxr6YFEsTS-OkyxReD4uNk7Midjjg/exec';
+
+  // location.replace を使うことで、ブラウザの「戻る」履歴にこの中継ページが
+  // 残らないようにする（戻るボタンを押した時にこのページに戻ってきて
+  // また転送される、という無限ループ感を避けるため）。
+  location.replace(GAS_WEBAPP_URL);
+</script>
+
+</body>
+</html>
